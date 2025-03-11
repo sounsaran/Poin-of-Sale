@@ -106,20 +106,26 @@ class CustomerController extends Controller
          */
         if ($file = $request->file('photo')) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
-            $path = 'public/customers/';
+            $path = public_path('images/customers/');
 
             /**
              * Delete photo if exists.
              */
-            if($customer->photo){
-                Storage::delete($path . $customer->photo);
+            if($customer->photo && file_exists($path . $customer->photo)){
+                unlink($path . $customer->photo);
             }
 
-            $file->storeAs($path, $fileName);
+            $file->move($path, $fileName);
             $validatedData['photo'] = $fileName;
         }
 
-        Customer::where('id', $customer->id)->update($validatedData);
+        $customer->fill($validatedData);
+
+        if(!$customer->name){
+            return back()->with('error', 'Customer Name is required!');
+        }
+
+        $customer->save();
 
         return Redirect::route('customer.index')->with('success', 'Customer has been updated!');
     }

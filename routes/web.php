@@ -19,7 +19,6 @@ Route::get('/', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'register']);
 
 
-
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 

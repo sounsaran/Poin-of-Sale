@@ -103,7 +103,7 @@
 
 <script>
     function previewImage() {
-    const file = document.getElementById('image').files[0];
+    const file = document.getElementById('photo').files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
